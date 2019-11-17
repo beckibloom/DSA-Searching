@@ -1,0 +1,96 @@
+Key terms:
+- Linear search
+- Binary search
+- Divide and conquer
+- Depth-first search (DFS)
+- Breadth-first search (BFS)
+- In-order search
+- Pre-ordering
+- Post-ordering
+
+Linear search
+    Searching through an array 1 by 1 until you find
+    The best case time complexity is O(1) if the item is at the start of the array, but O(n) for average and worst cases.
+
+    Example:
+    function indexOf(array, value) {
+        for (let i=0; i<array.length; i++) {
+            if (array[i] == value) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+Binary search
+    "Divide and conquer" approach
+    The best case is the item is in the middle of the array: O(1)
+    With each iteration, you can cut the search area in half, so the worst and average case running times are both O(log(n))
+
+    Example:
+    function binarySearch(array, value, start, end) {
+        var start = start === undefined ? 0 : start;
+        var end = end === undefined ? array.length: end;
+
+        if (start > end) {
+            return -1;
+        }
+
+        const index = Math.floor((start + end) / 2);
+        const item = array[index];
+
+        console.log(start, end);
+        if (item == value) {
+            return index;
+        } else if (item < value) {
+            return binarySearch(array, value, index + 1, end);
+        } else if (item > value) {
+            return binarySearch(array, value, start, index - 1);
+        }
+    };
+
+Searching and Traversal in a tree
+
+    Depth-first search (DFS)
+        Example func adds each value in a BST to an array. The runtime is always O(n) because it has to traverse every node.
+
+        Example:
+            dfs(values=[]) {
+                if (this.left) {
+                    values = this.left.dfs(values);
+                }
+                values.push(this.value);
+
+                if (this.right) {
+                    values = this.right.dfs(values);
+                }
+                return values;
+            }
+
+        Ordering
+            In the example, the leftmost branch is visited first, then the node itself, and then the right branch. Everything in order from left to right - this is an *in-order* traversal or search.
+
+            If the node is handled before the branches, it is a *pre-order* traversal.
+
+            If the node is handled after the traversal, it is a *post-order* traversal.
+
+    Breadth-first search 
+        Each node is visited once (O(n)) with the top row handled first, and then the children, and so on. Must create a FIFO queue so that the siblings can be stored in the queue and processed in the correct order
+
+        Example:
+            bfs(tree, values = []) {
+                const queue = new Queue(); //Assuming a queue is implemented
+                const node = tree.root;
+                queue.enqueue(node);
+                while (queue.length) {
+                    const node = queue.dequeue(); //remove from the queue
+                    values.push(node.value); //add that value from the queue to an array
+                    if (node.left) {
+                        queue.enqueue(node.left); //add left child to queue
+                    }
+                    if (node.right) {
+                        queue.enqueue(node.right); //add right child to queue
+                    }
+                }
+                return values;
+            }
